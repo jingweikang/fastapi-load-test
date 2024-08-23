@@ -6,3 +6,6 @@ start/compose:
 
 stop/compose:
 	docker compose down
+
+start/load:
+	python client/load_test.py

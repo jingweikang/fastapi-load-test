@@ -41,6 +41,7 @@ poetry export --without-hashes --format=requirements.txt > docker/requirements.t
     - Import the JSON model from `dashboard/fastapi.json`. This dashboard has request per second time-series, latency heatmaps, P99, etc.
 
 3. Run simulation
+    - `make start/load`
 
 ## Useful Links
 - Example of otel middleware: https://github.com/blueswen/fastapi-observability/tree/main

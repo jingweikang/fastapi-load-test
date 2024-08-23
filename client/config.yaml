@@ -1,0 +1,11 @@
+ENDPOINTS:
+  - NAME: sync-delay
+    URL: http://localhost:8000/sync-delay
+    CONCURRENCY: 40
+    MEAN_DELAY_MS: 200
+    STDDEV_DELAY_MS: 25 
+  - NAME: async-delay
+    URL: http://localhost:8000/async-delay
+    CONCURRENCY: 40
+    MEAN_DELAY_MS: 200
+    STDDEV_DELAY_MS: 25 

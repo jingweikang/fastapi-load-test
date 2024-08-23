@@ -39,7 +39,7 @@ RESPONSES = meter.create_counter(
     description="Total count of responses by method, path and status codes.",
 )
 REQUESTS_PROCESSING_TIME = meter.create_histogram(
-    name="fastapi_requests_duration_seconds",
+    name="fastapi_requests_duration",
     description="Histogram of requests processing time by path (in milliseconds)",
     unit="ms",
 )
@@ -99,7 +99,7 @@ def setting_otlp(app: FastAPI, app_name: str = "fastapi-load-test") -> None:
     # Setting OpenTelemetry
     OTEL_METRICS_ENDPOINT = os.environ.get("OTEL_METRICS_ENDPOINT", "observability:4317")
     OTEL_TRACES_ENDPOINT = os.environ.get("OTEL_TRACES_ENDPOINT", "observability:4317")
-    OTEL_METRICS_EXPORT_INTERVAL = int(os.environ.get("OTEL_METRICS_EXPORT_INTERVAL", 60000))
+    OTEL_METRIC_EXPORT_INTERVAL = int(os.environ.get("OTEL_METRIC_EXPORT_INTERVAL", 60000))
 
     # set the service name to show in traces
     resource = Resource.create(attributes={
@@ -119,7 +119,7 @@ def setting_otlp(app: FastAPI, app_name: str = "fastapi-load-test") -> None:
     metric_exporter = OTLPMetricExporter(endpoint=OTEL_METRICS_ENDPOINT, insecure=True)
     meter_provider = MeterProvider(
         metric_readers=[
-            PeriodicExportingMetricReader(exporter=metric_exporter, export_interval_millis=OTEL_METRICS_EXPORT_INTERVAL),
+            PeriodicExportingMetricReader(exporter=metric_exporter, export_interval_millis=OTEL_METRIC_EXPORT_INTERVAL),
         ],
     )
     metrics.set_meter_provider(meter_provider=meter_provider)
