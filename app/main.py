@@ -2,8 +2,15 @@ import os
 import time
 import asyncio
 from fastapi import FastAPI
+from app.observability import OtelMiddleware, setting_otlp
 
-app = FastAPI()
+app = FastAPI(
+    title="FastAPI load test",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+setting_otlp(app=app)
+app.add_middleware(OtelMiddleware)
 
 IO_DELAY_S = float(os.environ.get("IO_DELAY_S", 1))
 
@@ -11,12 +18,12 @@ IO_DELAY_S = float(os.environ.get("IO_DELAY_S", 1))
 def read_root():
     return {"Hello": "World"}
 
-@app.get("/async-example")
-async def get_async() -> float:
-    await asyncio.sleep(IO_DELAY_S)
-    return IO_DELAY_S
+@app.get("/async-delay/{delay_ms}")
+async def async_delay(delay_ms: int) -> int:
+    await asyncio.sleep(delay_ms/1000)
+    return delay_ms
 
-@app.get('/sync-example')
-def get_sync() -> float:
-    time.sleep(IO_DELAY_S)
-    return IO_DELAY_S
+@app.get('/sync-delay/{delay_ms}')
+def sync_delay(delay_ms: int) -> float:
+    time.sleep(delay_ms/1000)
+    return delay_ms

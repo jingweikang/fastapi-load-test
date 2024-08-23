@@ -8,3 +8,16 @@ services:
     restart: always
     environment:
       - IO_DELAY_S=5
+      - OTEL_METRICS_ENDPOINT=observability:4317
+      - OTEL_TRACES_ENDPOINT=observability:4317
+      - OTEL_METRICS_EXPORT_INTERVAL=500
+  
+  observability:
+    image: grafana/otel-lgtm
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+      - "4318:4318"
+    restart: always
+    environment:
+      - OTEL_METRIC_EXPORT_INTERVAL=500
