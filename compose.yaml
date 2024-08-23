@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      dockerfile: ./docker/Dockerfile
+    pull_policy: build
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      - IO_DELAY_S=5
